@@ -44,11 +44,7 @@ private:
 	void RotateLeft(RBNode* node);
 	void RotateRight(RBNode* node);
 
-	void InsertCase1(RBNode* node);
-	void InsertCase2(RBNode* node);
-	void InsertCase3(RBNode* node);
-	void InsertCase4(RBNode* node);
-	void InsertCase5(RBNode* node);
+	void CheckInsert(RBNode* node);
 
 	bool VerifyProperty1(RBNode* node);
 	bool VerifyProperty2(RBNode* node);

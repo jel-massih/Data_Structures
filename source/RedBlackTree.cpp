@@ -32,7 +32,7 @@ RBNode* RedBlackTree::Insert(RBNode* prev, RBNode* node, int value)
 		node->right = m_nil;
 		node->parent = prev;
 		node->bRed = true;
-		InsertCase1(node);
+		CheckInsert(node);
 	}
 	else if(value < node->value)
 	{
@@ -46,70 +46,45 @@ RBNode* RedBlackTree::Insert(RBNode* prev, RBNode* node, int value)
 	return node;
 }
 
-void RedBlackTree::InsertCase1(RBNode* node)
+void RedBlackTree::CheckInsert(RBNode* node)
 {
 	if(node->parent == m_nil)
 	{
 		node->bRed = false;
+		return;
 	}
-	else
-	{
-		InsertCase2(node);
-	}
-}
-
-void RedBlackTree::InsertCase2(RBNode* node)
-{
 	if(!node->parent->bRed)
 	{
 		return;
 	}
-	else
-	{
-		InsertCase3(node);
-	}
-}
 
-void RedBlackTree::InsertCase3(RBNode* node)
-{
 	if(getUncle(node)->bRed)
 	{
 		node->parent->bRed = false;
 		getUncle(node)->bRed = false;
 		getGrandParent(node)->bRed = true;
-		InsertCase1(getGrandParent(node));
+		CheckInsert(getGrandParent(node));
+		return;
 	}
-	else
-	{
-		InsertCase4(node);
-	}
-}
 
-void RedBlackTree::InsertCase4(RBNode* node)
-{
-	if(node->parent->right == node && node->parent == getGrandParent(node)->left)
+	if(node == node->parent->right && node->parent == getGrandParent(node)->left)
 	{
 		RotateLeft(node->parent);
 		node = node->left;
 	}
-	else if(node->parent->left == node && node->parent == getGrandParent(node)->right)
+	else if(node == node->parent->left && node->parent == getGrandParent(node)->right)
 	{
 		RotateRight(node->parent);
 		node = node->right;
 	}
 
-	InsertCase5(node);
-}
-
-void RedBlackTree::InsertCase5(RBNode* node)
-{
 	node->parent->bRed = false;
 	getGrandParent(node)->bRed = true;
-	if(node == node->parent->left && node->parent == getGrandParent(node)->left)
+	if(node == node->parent->left)
 	{
 		RotateRight(getGrandParent(node));
-	} 
-	else if(node == node->parent->right && node->parent == getGrandParent(node)->right)
+	}
+	else
 	{
 		RotateLeft(getGrandParent(node));
 	}
